@@ -1,7 +1,70 @@
 <?php
     $fonts ="arial";
     $fontcolor = "#FC8C41";
+    $errname=$erremail=$errwebsite=$errcomment=$errgender="";
+    $name=$email=$website=$comment=$gender="";
 
+    if ($_SERVER["REQUEST_METHOD"]=="POST") {
+
+        if (empty($_POST["name"])) {
+
+            $errname="<span style='color:red'>Name is required</span>";
+        }else {
+            $name=validate($_POST["name"]);
+            
+        }
+///////////////////////////////////////////////////
+        if (empty($_POST["email"])) {
+
+            $erremail="<span style='color:red'>Email is required</span>";
+        }
+        elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            # code...
+            $erremail="<span style='color:red'>Email is invalied</span>";
+        }
+        else {
+            $email=validate($_POST["email"]);
+            
+        }
+////////////////////////////////////////////////
+        if (empty($_POST["website"])) {
+
+            $errwebsite="<span style='color:red'>Website is required</span>";        
+        }
+        elseif (!filter_var($_POST["website"], FILTER_VALIDATE_URL)) {
+            # code...
+            $errwebsite="<span style='color:red'>URL is invalied</span>";
+        }
+        else {
+            $website=validate($_POST["website"]);
+            
+        }
+////////////////////////////////////////////        
+        if (empty($_POST["gender"])) {
+
+            $errgender="<span style='color:red'>Gender is required</span>";
+        }else {
+            $gender=validate($_POST["gender"]);
+            
+        }
+
+        $comment=validate($_REQUEST["comment"]);
+
+        // echo $name."<br>";
+        // echo $email."<br>";
+        // echo $website."<br>";
+        // echo $comment."<br>";
+        // echo $gender."<br>";
+
+    }
+        function validate($data)
+        {
+            # code...
+            $data=trim($data);
+            $data=stripcslashes($data);
+            $data=htmlspecialchars($data);
+            return $data;
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,39 +89,45 @@
     </section>
 
     <section class="maincontent">
-        1.String
-        2.Boolean
-        3.Float
-        4.Array
-        5.Integer
-        6.Object
-        7.NULL
-        8.Resource
         <hr>
-        <form method="post" action="index.php">
-        Name: <input type="text" name="username"><br><br/>
-        <br/>
-        <input type="submit" value="submit" >
-        </form>
+         Form Validation
+        <hr>
+    <form action="" method="post">
+        <table>
+            <p style="color: red;">* required field</p>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="name" >*<?php echo $errname ?></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email">*<?php echo $erremail ?></td>
+            </tr>
+            <tr>
+                <td>Website:</td>
+                <td><input type="text" name="website">*<?php echo $errwebsite ?></td>
+            </tr>
+            <tr>
+                <td>Comment:</td>
+                <td><textarea name="comment" rows="5" cols="40"></textarea></td>
+            </tr>
+            <tr>
+                <td>Gender:</td>
+                <td>
+                    <input type="radio" name="gender" value="female">Female
+                    <input type="radio" name="gender" value="male">Male
+                    *<?php echo $errgender ?>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Submit" name="button">    
+                </td>
+            </tr>
+        </table>
+    </form>
 
-        <a href="text.php?msg=ahsan&text=ahmed"></a>
-    <?php
-        if ($_SERVER["REQUEST_METHOD"]=="POST") {
-            # code...
-            $name=$_POST["username"];
-            if (empty($name)) {
-                echo "Enter Name";
-                # code...
-            }else {
-                echo $name;
-                
-            }
-        }
-    
-    
-        
-
-    ?>
     </section>
 
     <section class="footeroption">
